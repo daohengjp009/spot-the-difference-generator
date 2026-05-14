@@ -1,0 +1,34 @@
+{
+  "name": "ai-spot-the-difference-generator",
+  "version": "1.0.0",
+  "description": "AI-powered Spot the Difference puzzle generator for children",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint . --ext ts,tsx",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "next": "^15.0.0",
+    "framer-motion": "^10.16.12",
+    "openai": "^4.28.0",
+    "sharp": "^0.32.6",
+    "axios": "^1.6.2",
+    "uuid": "^9.0.0",
+    "tailwindcss": "^3.3.0",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.31"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@types/sharp": "^0.32.0",
+    "typescript": "^5.2.2",
+    "eslint": "^8.50.0",
+    "eslint-config-next": "^15.0.0"
+  }
+}

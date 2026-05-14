@@ -1,0 +1,40 @@
+{
+  "name": "AI Spot the Difference Generator",
+  "description": "Create unlimited children-friendly Spot the Difference puzzles using AI",
+  "version": "1.0.0",
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "nodeVersion": "18.x",
+  "env": [
+    {
+      "key": "OPENAI_API_KEY",
+      "description": "OpenAI API key for DALL-E 3 access",
+      "value": "",
+      "type": "secret"
+    },
+    {
+      "key": "NEXT_PUBLIC_API_URL",
+      "description": "Public API URL",
+      "value": "https://spotdifference.vercel.app",
+      "type": "string"
+    },
+    {
+      "key": "DATABASE_URL",
+      "description": "PostgreSQL connection string (optional)",
+      "value": "",
+      "type": "secret"
+    }
+  ],
+  "regions": ["sfo1", "lhr1", "nrt1"],
+  "git": {
+    "deploymentEnabled": true
+  },
+  "functions": {
+    "api/**/*.ts": {
+      "maxDuration": 60,
+      "memory": 3008
+    }
+  }
+}

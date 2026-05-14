@@ -1,0 +1,63 @@
+version: '3.9'
+
+services:
+  # Next.js Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/spot_the_difference
+      - NEXT_PUBLIC_API_URL=http://localhost:3000
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run dev
+    networks:
+      - spotdifference
+
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=spot_the_difference
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - spotdifference
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # PgAdmin for database management (optional)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@example.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    networks:
+      - spotdifference
+
+volumes:
+  postgres_data:
+
+networks:
+  spotdifference:
+    driver: bridge

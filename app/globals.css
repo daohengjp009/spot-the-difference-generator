@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  @apply m-0 p-0 box-border;
+}
+
+html,
+body {
+  @apply bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 min-h-screen font-body;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-display font-bold;
+}
+
+/* Custom Components */
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-2xl shadow-lg hover:shadow-play transition-all duration-300 hover:scale-105 active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 bg-white text-primary-600 font-semibold rounded-2xl border-2 border-primary-200 shadow-sm hover:border-primary-300 hover:shadow-md transition-all duration-300 hover:scale-105;
+  }
+
+  .btn-sm {
+    @apply px-3 py-1.5 text-sm font-medium rounded-lg transition-all duration-200;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300;
+  }
+
+  .card-hover {
+    @apply card cursor-pointer hover:scale-105 transform;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100 transition-all;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-primary-100 text-primary-700;
+  }
+
+  .difficulty-badge {
+    @apply inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider;
+  }
+
+  .difficulty-easy {
+    @apply bg-success-100 text-success-700;
+  }
+
+  .difficulty-medium {
+    @apply bg-warning-100 text-warning-700;
+  }
+
+  .difficulty-hard {
+    @apply bg-red-100 text-red-700;
+  }
+
+  /* Custom animations */
+  .animate-float-slow {
+    @apply animate-float;
+    animation-duration: 4s;
+  }
+
+  .animate-pulse-soft {
+    @apply animate-pulse;
+    animation-duration: 3s;
+  }
+
+  /* Glass morphism effect */
+  .glass {
+    @apply backdrop-blur-sm bg-white/30 border border-white/20;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-600 via-accent-500 to-primary-600 bg-clip-text text-transparent;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection styles */
+::selection {
+  @apply bg-primary-200 text-primary-900;
+}
+
+/* Loading skeleton */
+.skeleton {
+  @apply bg-gradient-to-r from-gray-100 via-gray-50 to-gray-100 bg-[length:200%_100%];
+  animation: shimmer 2s infinite;
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .container {
+    @apply px-4;
+  }
+}
+
+/* Print styles */
+@media print {
+  body {
+    @apply bg-white;
+  }
+
+  .no-print {
+    @apply hidden;
+  }
+}
