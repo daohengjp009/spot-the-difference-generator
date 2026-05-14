@@ -50,7 +50,7 @@ export class ExportEngine {
     filename?: string
   ): Promise<ExportResult> {
     try {
-      const pdfDoc = PDFDocument.create();
+      const pdfDoc = await PDFDocument.create();
 
       // Page 1: Puzzle instruction and images
       const page1 = pdfDoc.addPage([8.5 * 72, 11 * 72]); // A4 size

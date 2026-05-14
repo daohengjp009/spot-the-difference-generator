@@ -76,15 +76,15 @@ async function generatePuzzleAsync(
 ): Promise<void> {
   const startTime = Date.now();
 
-  try {
-    // Update status
-    const updateJob = (status: any) => {
-      const job = jobQueue.get(jobId);
-      if (job) {
-        jobQueue.set(jobId, { ...job, ...status });
-      }
-    };
+  // Define updateJob OUTSIDE try block so it's available in catch
+  const updateJob = (status: any) => {
+    const job = jobQueue.get(jobId);
+    if (job) {
+      jobQueue.set(jobId, { ...job, ...status });
+    }
+  };
 
+  try {
     updateJob({ status: 'generating', progress: 10 });
 
     // Step 1: Generate master scene
@@ -106,7 +106,7 @@ async function generatePuzzleAsync(
     // Step 4: Generate difference metadata
     console.log(`[${jobId}] Generating difference metadata`);
     let differences = DifferenceEngine.generateDifferences(instructions);
-    differences = DifferenceEngine.validateCoordinates(differences);
+    differences = DifferenceEngine.validateCoordinates(differences, 1024, 1024);
     differences = DifferenceEngine.distributeEvenly(differences);
     updateJob({ progress: 85 });
 

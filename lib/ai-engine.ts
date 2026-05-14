@@ -5,6 +5,19 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+const IMAGE_MODEL = process.env.OPENAI_IMAGE_MODEL || 'gpt-image-1';
+const TEXT_MODEL = process.env.OPENAI_TEXT_MODEL || 'gpt-4.1-mini';
+
+function extractImageSrc(image: { url?: string | null; b64_json?: string | null }): string {
+  if (image.url) {
+    return image.url;
+  }
+  if (image.b64_json) {
+    return `data:image/png;base64,${image.b64_json}`;
+  }
+  throw new Error('Image generation returned neither url nor b64_json');
+}
+
 /**
  * Get theme description for prompt engineering
  */
@@ -25,7 +38,7 @@ const getThemeDescription = (theme: Theme): string => {
 };
 
 /**
- * Generate a master scene image using DALL-E 3
+ * Generate a master scene image
  * This creates the original puzzle image with seed for reproducibility
  */
 export async function generateMasterScene(
@@ -53,10 +66,9 @@ Scene requirements:
 Make it highly colorful and playful, suitable for children ages 4-12.`;
 
   const response = await openai.images.generate({
-    model: 'dall-e-3',
+    model: IMAGE_MODEL,
     prompt: systemPrompt + '\n' + userPrompt,
     size: '1024x1024',
-    quality: 'hd',
     n: 1,
   });
 
@@ -64,7 +76,7 @@ Make it highly colorful and playful, suitable for children ages 4-12.`;
     throw new Error('Failed to generate image from OpenAI');
   }
 
-  return response.data[0].url || '';
+  return extractImageSrc(response.data[0]);
 }
 
 /**
@@ -105,7 +117,7 @@ Return a JSON object with these difference types:
 Format as JSON array of objects with: { type, description, severity }`;
 
   const response = await openai.chat.completions.create({
-    model: 'gpt-4-turbo',
+    model: TEXT_MODEL,
     messages: [
       {
         role: 'user',
@@ -185,18 +197,19 @@ Create a modified version that is nearly identical except for these specific dif
 The overall scene, setting, and composition must remain exactly the same.
 All differences must be subtle and findable by children ages 4-12.`;
 
-  const response = await openai.images.createVariation({
+  const response = await openai.images.edit({
+    model: IMAGE_MODEL,
     image: await fetchImageAsFile(masterImageUrl),
+    prompt,
     n: 1,
     size: '1024x1024',
-    model: 'dall-e-2',
   });
 
   if (!response.data || response.data.length === 0) {
     throw new Error('Failed to generate variation image');
   }
 
-  return response.data[0].url || '';
+  return extractImageSrc(response.data[0]);
 }
 
 /**

@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { HeroSection } from '@/components/HeroSection';
 import { GenerationControls } from '@/components/GenerationControls';
 import { PuzzleViewer } from '@/components/PuzzleViewer';
+import { FeedbackWidget } from '@/components/FeedbackWidget';
 import { PuzzleMetadata, Theme, Difficulty } from '@/lib/types';
 
 export default function Home() {
@@ -96,8 +97,13 @@ export default function Home() {
         const data = await response.json();
 
         if (data.success && data.url) {
-          // Download or open the file
-          window.open(data.url, '_blank');
+          // Trigger a same-tab download to avoid popup blockers.
+          const link = document.createElement('a');
+          link.href = data.url;
+          link.download = data.filename || `puzzle.${format}`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
         } else {
           setError(`Export failed: ${data.error}`);
         }
@@ -277,6 +283,8 @@ export default function Home() {
           <p className="mt-2">© 2024 Spot the Difference Generator. All rights reserved.</p>
         </div>
       </motion.footer>
+
+      <FeedbackWidget />
     </main>
   );
 }

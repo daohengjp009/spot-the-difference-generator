@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -13,12 +13,16 @@ export const metadata: Metadata = {
     'interactive',
   ],
   authors: [{ name: 'Spot the Difference Generator' }],
-  viewport: 'width=device-width, initial-scale=1.0',
   openGraph: {
     title: 'AI Spot the Difference Generator',
     description: 'Create unlimited children-friendly puzzle games with AI',
     type: 'website',
   },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({

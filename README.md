@@ -149,7 +149,27 @@ MAX_CONCURRENT_GENERATIONS=3             # Concurrent job limit
 MAX_EXPORT_SIZE=52428800                 # Max export file size
 ENABLE_PDF_EXPORT=true
 ENABLE_A4_EXPORT=true
+
+# Feedback collection (choose one or both)
+FEEDBACK_GOOGLE_WEBHOOK_URL=
+AIRTABLE_API_TOKEN=
+AIRTABLE_BASE_ID=
+AIRTABLE_TABLE_NAME=Feedback
 ```
+
+### Non-Technical Tester Feedback Setup
+
+Use the in-app `Send Feedback` button (bottom-right). It submits to `/api/feedback`.
+
+Google Sheets option:
+1. Create a Google Sheet with columns: `Timestamp`, `Name`, `Message`, `Page`, `UserAgent`.
+2. In Apps Script, publish a Web App that accepts `POST` JSON and appends one row.
+3. Put the web app URL into `FEEDBACK_GOOGLE_WEBHOOK_URL`.
+
+Airtable option:
+1. Create a table (default name `Feedback`) with fields: `Name`, `Message`, `Page`, `UserAgent`, `Timestamp`.
+2. Set `AIRTABLE_API_TOKEN` and `AIRTABLE_BASE_ID`.
+3. If needed, change `AIRTABLE_TABLE_NAME`.
 
 ## API Documentation
 
